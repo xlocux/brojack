@@ -32,11 +32,11 @@ optional arguments:
   --outfile OUTFILE, -o OUTFILE
                         define output file to save results of stdout. i.e. "test.txt"
                         
-  --mobile, -m          Change Usera Agent to Android mobile
+  --mobile, -m          Change User-Agent to android mobile
   
   --takeover, -t        Check if domain is available
   
-  --verbose, -v         Change Usera Agent to Android mobile
+  --verbose, -v         Show verbose info
 
 
 

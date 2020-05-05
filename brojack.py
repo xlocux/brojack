@@ -33,9 +33,9 @@ motd = 'Broken Link Hijack (BroJack) by Locu '
 parser = argparse.ArgumentParser(description=motd)
 parser.add_argument('--domain', '-d', required=True, help='domain name of website you want to map. i.e. "https://bio.locu.uk"')
 parser.add_argument('--outfile', '-o', help='define output file to save results of stdout. i.e. "test.txt"')
-parser.add_argument('--mobile', '-m', action="store_true", help='Change Usera Agent to Android mobile')
+parser.add_argument('--mobile', '-m', action="store_true", help='Change User-Agent to android mobile')
 parser.add_argument('--takeover', '-t', action="store_true", help='Check if domain is available')
-parser.add_argument('--verbose', '-v', action="store_true", help='Change Usera Agent to Android mobile')
+parser.add_argument('--verbose', '-v', action="store_true", help='Show verbose info')
 parser.parse_args()
 
 args = parser.parse_args()
