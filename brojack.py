@@ -31,15 +31,23 @@ class color:
 motd = 'Broken Link Hijack (BroJack) by Locu '
 
 parser = argparse.ArgumentParser(description=motd)
-parser.add_argument('--domain', '-d', required=True, help='domain name of website you want to map. i.e. "https://bio.locu.uk"')
-parser.add_argument('--outfile', '-o', help='define output file to save results of stdout. i.e. "test.txt"')
+parser.add_argument('--domain', '-d', help='Domain name of website you want to map. i.e. "https://bio.locu.uk"')
+parser.add_argument('-l', '--list', help='Process a list of domains/urls from an input file')
+parser.add_argument('--outfile', '-o', help='Define output file to save results of stdout. i.e. "test.txt"')
 parser.add_argument('--mobile', '-m', action="store_true", help='Change User-Agent to android mobile')
 parser.add_argument('--takeover', '-t', action="store_true", help='Check if domain is available')
 parser.add_argument('--verbose', '-v', action="store_true", help='Show verbose info')
 parser.parse_args()
 
+if len(sys.argv)<2:
+	print('eg: python %s -l domainlist' % sys.argv[0])
+	args = parser.parse_args(['-h'])
+else:
+	args = parser.parse_args()
+
 args = parser.parse_args()
 domain = args.domain
+dlist = args.list
 outfile = args.outfile
 mobile = args.mobile
 takeover = args.takeover
@@ -47,6 +55,8 @@ verbose = args.verbose
 
 if domain:
   print(color.BOLD + "Domain:", color.YELLOW, domain, color.END)
+if dlist:
+  print(color.BOLD + "Domain list file:", color.YELLOW, dlist, color.END)
 if outfile:
   print(color.BOLD + "Output file:", color.YELLOW, outfile, color.END)
 if mobile:
@@ -86,10 +96,10 @@ def crawler(domain, outfile):
                 print(color.PURPLE +"Invalid %s" % url,color.END)
               continue
             except (requests.exceptions.ConnectionError, requests.exceptions.InvalidURL,requests.exceptions.ConnectTimeout,requests.exceptions.HTTPError):
-
+              if verbose is True:
                 print(color.BOLD,color.RED +"Broken %s" % url, color.END)
-                broken_urls.add(url)
-                continue
+              broken_urls.add(url)
+              continue
             
             parts = urlsplit(url)
             base = "{0.netloc}".format(parts)
@@ -190,13 +200,17 @@ def report_file(outfile, processed_urls, local_urls, external_urls, broken_urls)
 
 
 def report(local_urls, external_urls, broken_urls):
-    print("External URLs:")
-    for x in external_urls:
+    if len(external_urls) > 0:
+      print("External URLs:")
+      for x in external_urls:
         print(x)
-    print("--------------------------------------------------------------------")
-    print("Broken URL's:")
-    for z in broken_urls:
-      print(z)
 
 
-crawler(domain, outfile)
+if args.list:	
+  domain_list = filter(None, open(dlist, 'r').read().splitlines())
+  for d in domain_list:
+    print(color.BOLD, color.DARKCYAN, "Processing %s" % d, color.END)
+    crawler(d, outfile)
+else:
+  crawler(domain, outfile)
+
