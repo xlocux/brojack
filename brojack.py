@@ -170,6 +170,7 @@ def check_broken(url,url_origin):
       if takeover is True:
         domain = url.split("//")[-1].split("/")[0].split('?')[0].replace("www.", "")
         if not domain in domains:
+          print(color.BOLD,color.GREEN +"Origin %s" % url_origin, color.END)
           domains.add(domain)
           check_domain(domain)
       else:
