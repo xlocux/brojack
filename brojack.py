@@ -91,7 +91,7 @@ def crawler(domain, outfile):
             try:
               #print (headers)
               response = requests.get(url,headers = headers,timeout=5)
-            except (requests.exceptions.InvalidSchema,requests.exceptions.MissingSchema,requests.exceptions.ReadTimeout,requests.exceptions.Timeout):
+            except (requests.exceptions.InvalidSchema,requests.exceptions.MissingSchema,requests.exceptions.ReadTimeout,requests.exceptions.Timeout,requests.exceptions.TooManyRedirects):
               if verbose is True:
                 print(color.PURPLE +"Invalid %s" % url,color.END)
               continue
@@ -161,7 +161,7 @@ def check_domain(domain):
 def check_broken(url,url_origin):
     try:
       response = requests.get(url,timeout=5)
-    except (requests.exceptions.InvalidSchema,requests.exceptions.MissingSchema,requests.exceptions.ReadTimeout,requests.exceptions.Timeout):
+    except (requests.exceptions.InvalidSchema,requests.exceptions.MissingSchema,requests.exceptions.ReadTimeout,requests.exceptions.Timeout,requests.exceptions.TooManyRedirects):
       if verbose is True:
         print(color.BOLD,color.GREEN +"Origin %s" % url_origin, color.END)
         print(color.PURPLE +"Invalid %s" % url,color.END)
