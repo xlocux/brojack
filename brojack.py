@@ -153,8 +153,8 @@ def check_domain(domain):
         print(domain + color.BLUE  + ' --> Available',color.END)
       else:
         print ('Something goes wrong with Domainer *-*')
-    except:
-      print ('oooops!')
+    except Exception as e:
+      print (e)
       pass
         
 
@@ -177,8 +177,8 @@ def check_broken(url,url_origin):
         print(color.BOLD,color.GREEN +"Origin %s" % url_origin, color.END)
         print(color.BOLD,color.RED +"Broken %s" % url, color.END)
       pass
-    except urllib.error.HTTPError as e:
-      print(e.code)
+    except Exception as e:
+      print(e)
       pass
 		
 
