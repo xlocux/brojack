@@ -3,6 +3,8 @@ Slow but very solid tool that checks for Broken Links Hijack.
 
 ![Image description](https://raw.githubusercontent.com/xlocux/brojack/master/brojack.png)
 
+I've created circa 30 reports during the quarantine almost all P4.
+
 ![Bugcrowd reports](https://raw.githubusercontent.com/xlocux/brojack/master/reports.png)
 
 
