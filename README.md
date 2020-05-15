@@ -19,6 +19,7 @@ $ pip install -r requirements.txt
 ## Usage:
 
 usage: brojack.py [-h] [--domain DOMAIN] [--list LIST] [--outfile OUTFILE] [--mobile] [--takeover] [--verbose]
+
 eg: python brojack.py -l domainlist
 
 Broken Link Hijack (BroJack) by Locu
