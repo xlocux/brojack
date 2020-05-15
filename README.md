@@ -1,9 +1,9 @@
 # BroJack
-Slow but very solid tool that checks for Broken Links Hijack.
+Slow but very solid tool that checks for Broken Links Hijacking.
 
 ![Image description](https://raw.githubusercontent.com/xlocux/brojack/master/brojack.png)
 
-I've created circa 30 reports during the quarantine almost all P4.
+I've created ~30 reports during the quarantine almost all P4.
 
 ![Bugcrowd reports](https://raw.githubusercontent.com/xlocux/brojack/master/reports.png)
 
@@ -52,8 +52,11 @@ optional arguments:
 
 MultiThreading
 
-
-
   ------------------------------------------------------------------------
   
+
+
+If you earn some $$$ with my tool feel free to...
+
+<a href="https://www.buymeacoffee.com/Locu" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-black.png" alt="Buy Me A Beer"></a>
 
