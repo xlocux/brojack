@@ -32,7 +32,7 @@ motd = 'Broken Link Hijack (BroJack) by Locu '
 
 parser = argparse.ArgumentParser(description=motd)
 parser.add_argument('--domain', '-d', help='Domain name of website you want to map. i.e. "https://bio.locu.uk"')
-parser.add_argument('-l', '--list', help='Process a list of domains/urls from an input file')
+parser.add_argument('--list', '-l', help='Process a list of domains/urls from an input file')
 parser.add_argument('--outfile', '-o', help='Define output file to save results of stdout. i.e. "test.txt"')
 parser.add_argument('--mobile', '-m', action="store_true", help='Change User-Agent to android mobile')
 parser.add_argument('--takeover', '-t', action="store_true", help='Check if domain is available')
@@ -81,8 +81,7 @@ def crawler(domain, outfile):
 
             url = new_urls.popleft()
             processed_urls.add(url)
-            if verbose is True:
-              print(color.CYAN,"Processing %s" % url, color.END)
+
             
             if mobile is True:
               headers = ({'User-Agent':'Mozilla/5.0 (Linux; Android 9; SM-G960F Build/PPR1.180610.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.157 Mobile Safari/537.36'})
