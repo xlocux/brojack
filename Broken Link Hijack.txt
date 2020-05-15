@@ -22,7 +22,7 @@ Also, sometimes, the hackers just want to attack the end users, broken links cou
 #Attack Scenario:
 
 1. The attacker buy DOMAIN
-2. Then he set up a redirect from DOMAIN to DOMAIN (using a typosquatting domain... few example below)
+2. Then he set up a redirect from DOMAIN to TARGET (using a typosquatting domain... few example below)
 3. In the fake DOMAIN URL the attacker replicate a sensible page (eg. a login page)
 4.All the users that can't spot the difference in the address bar will get fooled
 
