@@ -1,5 +1,5 @@
 # BroJack
-Slow but very solid tool that checks for Broken Links Hijacking.
+Slow but very solid tool that checks for Broken Links Hijacking (can runs for days *_*)
 
 ![Image description](https://raw.githubusercontent.com/xlocux/brojack/master/brojack.png)
 
