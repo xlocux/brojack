@@ -36,7 +36,7 @@ optional arguments:
   --domain DOMAIN, -d DOMAIN
                         Domain name of website you want to map. i.e. "https://github.com/xlocux"
                         
-  --list LIST, -l LIST  Process a list of domains/urls from an input file
+  --list LIST, -l LIST  Process a list of urls from an input file
   
   --outfile OUTFILE, -o OUTFILE
                         Define output file to save results of stdout. i.e. "test.txt"
