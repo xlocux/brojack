@@ -1,5 +1,5 @@
 # BroJack
-Broken Link Hijack tool that checks also for available domain
+Slow but very solid tool that checks for Broken Links Hijack.
 
 ![Image description](https://raw.githubusercontent.com/xlocux/brojack/master/brojack.png)
 
@@ -18,27 +18,26 @@ $ pip install -r requirements.txt
 
 ## Usage:
 
-brojack.py [-h] [--domain DOMAIN] [-l LIST] [--outfile OUTFILE] [--mobile] [--takeover] [--verbose]
+usage: brojack.py [-h] [--domain DOMAIN] [--list LIST] [--outfile OUTFILE] [--mobile] [--takeover] [--verbose]
+eg: python brojack.py -l domainlist
 
 Broken Link Hijack (BroJack) by Locu
 
 optional arguments:
   -h, --help            show this help message and exit
-  
   --domain DOMAIN, -d DOMAIN
-                        Domain name of website you want to map. i.e."https://bio.locu.uk"
-                        
-  -l LIST, --list LIST  Process a list of domains/urls from an input file
-  
-  --outfile OUTFILE, -o OUTFILE Define output file to save results of stdout. i.e. "test.txt"
-  
+                        Domain name of website you want to map. i.e. "https://bio.locu.uk"
+  --list LIST, -l LIST  Process a list of domains/urls from an input file
+  --outfile OUTFILE, -o OUTFILE
+                        Define output file to save results of stdout. i.e. "test.txt"
   --mobile, -m          Change User-Agent to android mobile
-  
   --takeover, -t        Check if domain is available
-  
   --verbose, -v         Show verbose info
 
 
+## ToDo:
+
+MultiThreading
 
 
 
