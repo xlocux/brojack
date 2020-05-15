@@ -1,0 +1,37 @@
+
+Hi,
+Broken Link Hijacking (BLH) exists whenever a target links to an expired domain or page.
+This type of bug seems to be unharmful but in fact it is not.
+
+Looking at the endpoint page you can see that it's possible to hijack the below link:
+
+IMAGE
+
+
+As you can see below the domain is for sale:
+
+IMAGE
+
+
+#Impact:
+An attacker can buy the domain and use it to distribuite malware, produce spam campains or for some Black SEO hack in any case you will suffer from a reputation damage.
+Tabnabbing is also possible due to the lack of "rel=noopener" tag.
+Any user will fall into this because they trust the main domain.
+Also, sometimes, the hackers just want to attack the end users, broken links could be a very interesting assist for __waterholing attacks__.
+
+#Attack Scenario:
+
+1. The attacker buy DOMAIN
+2. Then he set up a redirect from DOMAIN to DOMAIN (using a typosquatting domain... few example below)
+3. In the fake DOMAIN URL the attacker replicate a sensible page (eg. a login page)
+4.All the users that can't spot the difference in the address bar will get fooled
+
+Below few typos domains available:
+
+IMAGE
+
+
+I suggest you to set up a links checker script that runs periodically in order to avoid the aforementioned vulnerability.
+
+
+Regards
