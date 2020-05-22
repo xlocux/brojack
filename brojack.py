@@ -13,8 +13,8 @@ from colorama import Fore, Style
 import re
 import sys
 import os
-import subprocess
 import argparse
+from datetime import datetime
 
 class color:
    PURPLE = '\033[95m'
@@ -77,6 +77,7 @@ local_urls = set()
 processed_urls = set()
 domains = set()
 exclusion = set()
+tf= datetime.now().strftime("%d-%m-%Y_%I-%M-%S_%p")
 
 if exclusions is True:
   with open('exclusions.dat') as file:
@@ -156,7 +157,7 @@ def check_domain(domain,url_origin):
       elif "Taken" not in res:
         print(domain + color.BLUE  + ' --> Available',color.END)
         if outfile is not None:
-          f = open(outfile, 'a')
+          f = open(outfile+tf, 'a')
           f.write("Origin: " +url_origin + "\n Domain: " + domain + "\n" )
           f.close()
       else:
@@ -183,6 +184,9 @@ def check_broken(url,url_origin):
               print(color.BOLD,color.GREEN +"Origin %s" % url_origin, color.END)
               domains.add(domain)
               check_domain(domain,url_origin)
+            elif verbose is True:
+                print(color.BOLD,color.RED +"Excluded %s" % domain, color.END)
+
           else:
             print(color.BOLD,color.GREEN +"Origin %s" % url_origin, color.END)
             domains.add(domain)
