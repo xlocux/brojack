@@ -31,11 +31,12 @@ class color:
 motd = 'Broken Link Hijack (BroJack) by Locu '
 
 parser = argparse.ArgumentParser(description=motd)
-parser.add_argument('--domain', '-d', help='Domain name of website you want to map. i.e. "https://bio.locu.uk"')
-parser.add_argument('--list', '-l', help='Process a list of domains/urls from an input file')
-parser.add_argument('--outfile', '-o', help='Define output file to save results of stdout. i.e. "test.txt"')
+parser.add_argument('--domain', '-d', help='Domain name of website you want to map. i.e. "https://github.com/xlocux"')
+parser.add_argument('--list', '-l', help='Process a list of urls from an input file')
+parser.add_argument('--outfile', '-o', help='Define output file to save available domain, -t flag required')
 parser.add_argument('--mobile', '-m', action="store_true", help='Change User-Agent to android mobile')
 parser.add_argument('--takeover', '-t', action="store_true", help='Check if domain is available')
+parser.add_argument( '--exclusions','-x', action='store_true', help='Use exclusions domains list')
 parser.add_argument('--verbose', '-v', action="store_true", help='Show verbose info')
 parser.parse_args()
 
@@ -51,6 +52,7 @@ dlist = args.list
 outfile = args.outfile
 mobile = args.mobile
 takeover = args.takeover
+exclusions = args.exclusions
 verbose = args.verbose
 
 if domain:
@@ -63,6 +65,8 @@ if mobile:
   print(color.BOLD + "User Agent Mobile:", color.YELLOW, mobile, color.END)
 if takeover:
   print(color.BOLD + "Takeover Check:", color.YELLOW, takeover, color.END)
+if exclusions:
+  print(color.BOLD + "Exclusion List:", color.YELLOW, takeover, color.END)
 if verbose:
   print(color.BOLD + "Verbose:", color.YELLOW, verbose, color.END)        
 
@@ -72,8 +76,13 @@ external_urls = set()
 local_urls = set()
 processed_urls = set()
 domains = set()
+exclusion = set()
 
-def crawler(domain, outfile):
+if exclusions is True:
+  with open('exclusions.dat') as file:
+    exclusion= [i.strip() for i in file]
+
+def crawler(domain):
     try:
         new_urls = deque([domain])
        
@@ -84,12 +93,12 @@ def crawler(domain, outfile):
 
             
             if mobile is True:
-              headers = ({'User-Agent':'Mozilla/5.0 (Linux; Android 9; SM-G960F Build/PPR1.180610.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.157 Mobile Safari/537.36'})
+              UA = ({'User-Agent':'Mozilla/5.0 (Linux; Android 9; SM-G960F Build/PPR1.180610.011; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.157 Mobile Safari/537.36'})
             else:
-              headers = ({'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'})
+              UA = ({'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'})
             try:
               #print (headers)
-              response = requests.get(url,headers = headers,timeout=5)
+              response = requests.get(url,headers = UA,timeout=5)
             except (requests.exceptions.InvalidSchema,requests.exceptions.MissingSchema,requests.exceptions.ReadTimeout,requests.exceptions.Timeout,requests.exceptions.TooManyRedirects):
               if verbose is True:
                 print(color.PURPLE +"Invalid %s" % url,color.END)
@@ -130,26 +139,26 @@ def crawler(domain, outfile):
                     new_urls.append(i)
 
         print()
-        if outfile is not None:
-          return report_file(outfile, processed_urls, local_urls, external_urls, broken_urls)
-        else:
-          return report(local_urls, external_urls, broken_urls)
+        return report(external_urls)
 
     
     except KeyboardInterrupt:
         sys.exit()
 
-def check_domain(domain):
+def check_domain(domain,url_origin):
     try:
       url = ("https://domainr.com/?q=" + domain)
       response = requests.get(url,timeout=5)
       soup = BeautifulSoup(response.text, "lxml")
       res = str(soup.find("div", { "class" : "domain-status" }))
-
       if "Available" not in res:
         print(domain + color.RED  +  ' --> Taken',color.END)
       elif "Taken" not in res:
         print(domain + color.BLUE  + ' --> Available',color.END)
+        if outfile is not None:
+          f = open(outfile, 'a')
+          f.write("Origin: " +url_origin + "\n Domain: " + domain + "\n" )
+          f.close()
       else:
         print ('Something goes wrong with Domainer *-*')
     except Exception as e:
@@ -167,11 +176,18 @@ def check_broken(url,url_origin):
       pass
     except (requests.exceptions.ConnectionError, requests.exceptions.InvalidURL,requests.exceptions.ConnectTimeout,requests.exceptions.HTTPError):
       if takeover is True:
-        domain = url.split("//")[-1].split("/")[0].split('?')[0].replace("www.", "")
+        domain  = "{0.netloc}".format(urlsplit(url)).replace("www.", "")
         if not domain in domains:
-          print(color.BOLD,color.GREEN +"Origin %s" % url_origin, color.END)
-          domains.add(domain)
-          check_domain(domain)
+          if exclusions is True:
+            if domain not in exclusion:
+              print(color.BOLD,color.GREEN +"Origin %s" % url_origin, color.END)
+              domains.add(domain)
+              check_domain(domain,url_origin)
+          else:
+            print(color.BOLD,color.GREEN +"Origin %s" % url_origin, color.END)
+            domains.add(domain)
+            check_domain(domain,url_origin)
+
       else:
         print(color.BOLD,color.GREEN +"Origin %s" % url_origin, color.END)
         print(color.BOLD,color.RED +"Broken %s" % url, color.END)
@@ -179,27 +195,9 @@ def check_broken(url,url_origin):
     except Exception as e:
       print(e)
       pass
-		
-
-def report_file(outfile, processed_urls, local_urls, external_urls, broken_urls):
-    with open(outfile, 'w') as f:
-        print(
-            "--------------------------------------------------------------------", file=f)
-        print("Local URLs:", file=f)
-        for j in local_urls:
-            print(j, file=f)
-        print(
-            "--------------------------------------------------------------------", file=f)
-        print("External URLs:", file=f)
-        for x in external_urls:
-            print(x, file=f)
-        print("--------------------------------------------------------------------", file=f)
-        print("Broken URL's:", file=f)
-        for z in broken_urls:
-          print(z, file=f)
 
 
-def report(local_urls, external_urls, broken_urls):
+def report(external_urls):
     if len(external_urls) > 0:
       print("External URLs:")
       for x in external_urls:
@@ -209,8 +207,8 @@ def report(local_urls, external_urls, broken_urls):
 if args.list:	
   domain_list = filter(None, open(dlist, 'r').read().splitlines())
   for d in domain_list:
-    print(color.BOLD, color.DARKCYAN, "Processing %s" % d, color.END)
-    crawler(d, outfile)
+    print(color.BOLD, color.DARKCYAN, "Analyzing %s" % d, color.END)
+    crawler(d)
 else:
-  crawler(domain, outfile)
+  crawler(domain)
 
