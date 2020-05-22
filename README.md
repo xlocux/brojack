@@ -24,9 +24,8 @@ $ pip install -r requirements.txt
 
 ## Usage:
 
-usage: brojack.py [-h] [--domain DOMAIN] [--list LIST] [--outfile OUTFILE] [--mobile] [--takeover] [--verbose]
-
-eg: python brojack.py -l domainlist
+usage: brojack.py [-h] [--domain DOMAIN] [--list LIST] [--outfile OUTFILE]
+                  [--mobile] [--takeover] [--exclusions] [--verbose]
 
 Broken Link Hijack (BroJack) by Locu
 
@@ -34,16 +33,20 @@ optional arguments:
   -h, --help            show this help message and exit
   
   --domain DOMAIN, -d DOMAIN
-                        Domain name of website you want to map. i.e. "https://github.com/xlocux"
+                        Domain name of website you want to map. i.e.
+                        "https://github.com/xlocux"
                         
   --list LIST, -l LIST  Process a list of urls from an input file
   
   --outfile OUTFILE, -o OUTFILE
-                        Define output file to save results of stdout. i.e. "test.txt"
+                        Define output file to save available domain, -t flag
+                        required
                         
   --mobile, -m          Change User-Agent to android mobile
   
   --takeover, -t        Check if domain is available
+  
+  --exclusions, -x      Use exclusions domains list
   
   --verbose, -v         Show verbose info
 
