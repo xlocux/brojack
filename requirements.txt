@@ -3,3 +3,4 @@ argparse
 jsbeautifier
 colorama
 bs4
+tldextract
