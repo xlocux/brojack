@@ -10,6 +10,7 @@ from urllib.parse import urlsplit
 from urllib.parse import urlparse
 from collections import deque
 from colorama import Fore, Style
+import tldextract
 import re
 import sys
 import os
@@ -100,7 +101,7 @@ def crawler(domain):
             try:
               #print (headers)
               response = requests.get(url,headers = UA,timeout=5)
-            except (requests.exceptions.InvalidSchema,requests.exceptions.MissingSchema,requests.exceptions.ReadTimeout,requests.exceptions.Timeout,requests.exceptions.TooManyRedirects):
+            except (requests.exceptions.InvalidSchema,requests.exceptions.MissingSchema,requests.exceptions.ReadTimeout,requests.exceptions.Timeout,requests.exceptions.TooManyRedirects,requests.exceptions.ChunkedEncodingError):
               if verbose is True:
                 print(color.PURPLE +"Invalid %s" % url,color.END)
               continue
@@ -170,14 +171,16 @@ def check_domain(domain,url_origin):
 def check_broken(url,url_origin):
     try:
       response = requests.get(url,timeout=5)
-    except (requests.exceptions.InvalidSchema,requests.exceptions.MissingSchema,requests.exceptions.ReadTimeout,requests.exceptions.Timeout,requests.exceptions.TooManyRedirects):
+    except (requests.exceptions.InvalidSchema,requests.exceptions.MissingSchema,requests.exceptions.ReadTimeout,requests.exceptions.Timeout,requests.exceptions.TooManyRedirects,requests.exceptions.ChunkedEncodingError):
       if verbose is True:
         print(color.BOLD,color.GREEN +"Origin %s" % url_origin, color.END)
         print(color.PURPLE +"Invalid %s" % url,color.END)
       pass
     except (requests.exceptions.ConnectionError, requests.exceptions.InvalidURL,requests.exceptions.ConnectTimeout,requests.exceptions.HTTPError):
       if takeover is True:
-        domain  = "{0.netloc}".format(urlsplit(url)).replace("www.", "")
+        dextract =  tldextract.extract(url)
+        domain = "{}.{}".format(dextract.domain, dextract.suffix)
+        #domain  = "{0.netloc}".format(urlsplit(url)).replace("www.", "")
         if not domain in domains:
           if exclusions is True:
             if domain not in exclusion:
