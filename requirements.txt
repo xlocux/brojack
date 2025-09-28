@@ -4,3 +4,4 @@ jsbeautifier
 colorama
 bs4
 tldextract
+lxml
