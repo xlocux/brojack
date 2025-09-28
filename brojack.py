@@ -3,6 +3,22 @@
 # Broken Link Hijack (BroJack)
 # By Locu
 
+import sys
+import os
+import subprocess
+import pkg_resources
+
+# Check and install required dependencies
+required_packages = ['beautifulsoup4', 'requests', 'colorama', 'tldextract', 'lxml']
+installed_packages = [pkg.key for pkg in pkg_resources.working_set]
+
+missing_packages = [pkg for pkg in required_packages if pkg.lower() not in installed_packages]
+
+if missing_packages:
+    print("Installing missing dependencies:", ", ".join(missing_packages))
+    subprocess.check_call([sys.executable, '-m', 'pip', 'install'] + missing_packages)
+    print("Dependencies installed successfully!")
+
 from bs4 import BeautifulSoup
 import requests
 import requests.exceptions
@@ -12,8 +28,6 @@ from collections import deque
 from colorama import Fore, Style
 import tldextract
 import re
-import sys
-import os
 import argparse
 from datetime import datetime
 import threading
