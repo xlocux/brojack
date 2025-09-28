@@ -6,18 +6,38 @@
 import sys
 import os
 import subprocess
-import pkg_resources
+import importlib.util
+
+# Function to check if a package is installed
+def is_package_installed(package_name):
+    spec = importlib.util.find_spec(package_name)
+    return spec is not None
 
 # Check and install required dependencies
-required_packages = ['beautifulsoup4', 'requests', 'colorama', 'tldextract', 'lxml']
-installed_packages = [pkg.key for pkg in pkg_resources.working_set]
+required_packages = {
+    'beautifulsoup4': 'bs4',
+    'requests': 'requests',
+    'colorama': 'colorama',
+    'tldextract': 'tldextract',
+    'lxml': 'lxml'
+}
 
-missing_packages = [pkg for pkg in required_packages if pkg.lower() not in installed_packages]
+missing_packages = []
+for package, import_name in required_packages.items():
+    if not is_package_installed(import_name):
+        missing_packages.append(package)
 
 if missing_packages:
     print("Installing missing dependencies:", ", ".join(missing_packages))
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install'] + missing_packages)
-    print("Dependencies installed successfully!")
+    try:
+        subprocess.check_call([sys.executable, '-m', 'pip', 'install'] + missing_packages)
+        print("Dependencies installed successfully!")
+    except Exception as e:
+        print(f"Error installing dependencies: {e}")
+        print("Please install the following packages manually:")
+        for pkg in missing_packages:
+            print(f"  pip install {pkg}")
+        sys.exit(1)
 
 from bs4 import BeautifulSoup
 import requests
